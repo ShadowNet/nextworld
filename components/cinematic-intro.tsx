@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { BrandDropdownMenu } from "@/components/brand-dropdown-menu";
@@ -40,6 +40,24 @@ const menu: { href: string; label: string; icon: ReactNode; featured?: boolean }
   { href: "/get-right", label: "Get Right", icon: <CrownIcon />, featured: true },
   { href: "/about", label: "About", icon: <AboutIcon /> },
 ];
+
+const { props: desktopFinalImage } = getImageProps({
+  src: "/hero-final.jpg",
+  alt: "",
+  width: 1920,
+  height: 1080,
+  sizes: "100vw",
+  priority: true,
+});
+
+const { props: mobileFinalImage } = getImageProps({
+  src: "/hero-final-mobile.jpg",
+  alt: "",
+  width: 1080,
+  height: 1920,
+  sizes: "100vw",
+  priority: true,
+});
 
 const mistLayers = [
   { top: "8%", height: "22%", opacity: 0.1, blur: 28, duration: 128, direction: 1, scale: 1.04 },
@@ -135,14 +153,18 @@ export function CinematicIntro() {
   return (
     <main className="homepage-intro-shell relative isolate w-full overflow-hidden bg-[#10151a]">
       <section className="relative h-full w-full overflow-hidden" aria-label="Cinematic introduction">
-        <Image
-          src="/hero-final.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className={`homepage-video object-cover ${showFallbackImage ? "opacity-100" : "opacity-0"}`}
-        />
+        <picture className={`absolute inset-0 ${showFallbackImage ? "opacity-100" : "opacity-0"}`}>
+          <source
+            media="(max-width: 767px) and (orientation: portrait)"
+            srcSet={mobileFinalImage.srcSet}
+            sizes="100vw"
+          />
+          <img
+            {...desktopFinalImage}
+            alt=""
+            className="homepage-video h-full w-full object-cover"
+          />
+        </picture>
 
         <video
           ref={introVideoRef}
@@ -165,6 +187,11 @@ export function CinematicIntro() {
           }}
           aria-hidden="true"
         >
+          <source
+            src="/hero-intro-mobile.mp4"
+            type="video/mp4"
+            media="(max-width: 767px) and (orientation: portrait)"
+          />
           <source src="/hero-intro.mp4" type="video/mp4" />
         </video>
 
