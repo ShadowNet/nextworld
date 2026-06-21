@@ -17,6 +17,7 @@ type BrandDropdownMenuProps = {
   tone?: "light" | "dark";
   leading?: ReactNode;
   triggerClassName?: string;
+  menuClassName?: string;
 };
 
 export function BrandDropdownMenu({
@@ -24,6 +25,7 @@ export function BrandDropdownMenu({
   tone = "light",
   leading,
   triggerClassName = "",
+  menuClassName = "",
 }: BrandDropdownMenuProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -125,7 +127,7 @@ export function BrandDropdownMenu({
               dark
                 ? "border-[#e1b766]/25 bg-[#11161b]/88 text-[#f8f1e4] shadow-[0_20px_55px_rgba(0,0,0,.34)]"
                 : "border-[#aa8247]/20 bg-[#fffaf0]/92 text-[#1d2832] shadow-[0_18px_50px_rgba(44,35,24,.16)]"
-            }`}
+            } ${menuClassName}`}
             role="menu"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}

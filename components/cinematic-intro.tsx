@@ -50,7 +50,7 @@ const mistLayers = [
 
 function AtmosphericMist({ reducedMotion }: { reducedMotion: boolean }) {
   return (
-    <div className="pointer-events-none absolute inset-0 z-[3] overflow-hidden" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-0 z-[3] hidden overflow-hidden sm:block" aria-hidden="true">
       {mistLayers.map((layer) => (
         <motion.div
           key={layer.top}
@@ -96,6 +96,17 @@ export function CinematicIntro() {
     }
   }, [reducedMotion]);
 
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    const video = introVideoRef.current;
+    const playPromise = video?.play();
+    playPromise?.catch(() => {
+      setVideoFailed(true);
+      setIntroEnded(true);
+    });
+  }, [reducedMotion]);
+
   function handleLoadedMetadata() {
     if (!reducedMotion) return;
 
@@ -122,25 +133,27 @@ export function CinematicIntro() {
   }
 
   return (
-    <main className="relative isolate min-h-screen overflow-hidden bg-[#10151a]">
-      <section className="relative h-[100svh] min-h-[38rem] overflow-hidden" aria-label="Cinematic introduction">
+    <main className="homepage-intro-shell relative isolate w-full overflow-hidden bg-[#10151a]">
+      <section className="relative h-full w-full overflow-hidden" aria-label="Cinematic introduction">
         <Image
           src="/hero-final.jpg"
           alt=""
           fill
           priority
           sizes="100vw"
-          className={`object-cover ${showFallbackImage ? "opacity-100" : "opacity-0"}`}
+          className={`homepage-video object-cover ${showFallbackImage ? "opacity-100" : "opacity-0"}`}
         />
 
         <video
           ref={introVideoRef}
-          className={`absolute inset-0 z-[1] h-full w-full object-cover ${showFallbackImage ? "opacity-0" : "opacity-100"}`}
+          className={`homepage-video absolute inset-0 z-[1] h-full w-full object-cover ${showFallbackImage ? "opacity-0" : "opacity-100"}`}
           autoPlay={!reducedMotion}
           muted
           playsInline
           preload="auto"
           loop={false}
+          disablePictureInPicture
+          disableRemotePlayback
           onLoadedMetadata={handleLoadedMetadata}
           onSeeked={() => {
             if (introEnded) introVideoRef.current?.pause();
@@ -155,15 +168,16 @@ export function CinematicIntro() {
           <source src="/hero-intro.mp4" type="video/mp4" />
         </video>
 
-        <div className="absolute left-[max(1.25rem,3vw)] top-[max(1rem,2.5vw)] z-[60]">
+        <div className="homepage-brand-position absolute z-[60]">
           <BrandDropdownMenu
             label="REDGHY"
             tone="dark"
             triggerClassName="text-sm font-semibold tracking-[0.32em] text-[#f0ce8a] [text-shadow:0_2px_14px_rgba(0,0,0,.35)] sm:text-base"
+            menuClassName="!w-[min(17.5rem,calc(100vw-2rem))]"
           />
         </div>
 
-        <div className="absolute right-[max(1.25rem,3vw)] top-[max(1.25rem,2.5vw)] z-[55]">
+        <div className="homepage-skip-position absolute z-[55]">
           <AnimatePresence>
             {!showFinalState && !reducedMotion && (
               <SkipIntroButton key="skip-intro" onSkip={() => completeIntro(true)} />
@@ -173,12 +187,13 @@ export function CinematicIntro() {
 
         {showFinalState && <AtmosphericMist reducedMotion={reducedMotion} />}
 
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-[8] h-28 bg-gradient-to-b from-[#071018]/28 to-transparent" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[32%] bg-gradient-to-t from-[#06090d]/65 to-transparent" aria-hidden="true" />
 
         {showFinalState && (
           <motion.nav
             aria-label="Primary"
-            className="absolute inset-x-0 bottom-[max(1.25rem,4.5vh)] z-30 mx-auto grid w-[min(92vw,72rem)] grid-cols-3 gap-3 sm:gap-5"
+            className="homepage-menu absolute z-30 mx-auto grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-5"
             initial={reducedMotion ? false : { opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reducedMotion ? 0 : 0.75, ease: "easeOut" }}
@@ -187,7 +202,7 @@ export function CinematicIntro() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`group flex min-h-16 items-center justify-center gap-2 rounded-xl border px-3 text-[0.66rem] font-medium uppercase tracking-[0.22em] text-white backdrop-blur-md transition duration-300 sm:min-h-20 sm:gap-5 sm:text-sm sm:tracking-[0.3em] ${
+                className={`group flex min-h-12 items-center justify-center gap-2 rounded-xl border px-3 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-white backdrop-blur-md transition duration-300 active:translate-y-px active:bg-[#b58231]/30 sm:min-h-20 sm:gap-5 sm:text-sm sm:tracking-[0.3em] ${
                   item.featured
                     ? "border-[#e5b75d] bg-[#171614]/55 text-[#f3c96f] shadow-[0_0_35px_rgba(224,174,83,0.12)] hover:bg-[#b58231]/25"
                     : "border-white/35 bg-[#15191d]/35 hover:border-[#e4bc72]/75 hover:text-[#f2cc81]"

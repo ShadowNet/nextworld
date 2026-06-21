@@ -48,6 +48,88 @@ button {
   will-change: transform;
 }
 
+.homepage-intro-shell {
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  min-height: 0;
+  overscroll-behavior: none;
+}
+
+.homepage-video {
+  object-position: 50% 50%;
+}
+
+.homepage-brand-position {
+  left: calc(env(safe-area-inset-left, 0px) + 1rem);
+  top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+}
+
+.homepage-skip-position {
+  right: calc(env(safe-area-inset-right, 0px) + 1rem);
+  top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+}
+
+.homepage-menu {
+  inset-inline: 0;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+  width: min(88vw, 23rem);
+}
+
+@media (min-width: 40rem) {
+  .homepage-menu {
+    width: min(92vw, 72rem);
+  }
+}
+
+@media (min-width: 48rem) and (min-height: 40rem) {
+  .homepage-intro-shell {
+    min-height: 38rem;
+  }
+
+  .homepage-brand-position {
+    left: max(1.25rem, 3vw);
+    top: max(1rem, 2.5vw);
+  }
+
+  .homepage-skip-position {
+    right: max(1.25rem, 3vw);
+    top: max(1.25rem, 2.5vw);
+  }
+
+  .homepage-menu {
+    bottom: max(calc(env(safe-area-inset-bottom, 0px) + 1rem), 4.5vh);
+  }
+}
+
+@media (orientation: portrait) and (max-width: 47.99rem) {
+  .homepage-video {
+    object-position: 50% center;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 36rem) {
+  .homepage-video {
+    object-position: 50% 52%;
+  }
+
+  .homepage-brand-position,
+  .homepage-skip-position {
+    top: calc(env(safe-area-inset-top, 0px) + 0.4rem);
+  }
+
+  .homepage-menu {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+    width: min(92vw, 72rem);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .homepage-menu a {
+    min-height: 2.75rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
