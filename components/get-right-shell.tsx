@@ -8,6 +8,7 @@ const navigation = [
   { label: "Services", href: "/get-right#services", match: "/get-right" },
   { label: "Policy", href: "/get-right/policy", match: "/get-right/policy" },
   { label: "Catalog", href: "/get-right/catalog", match: "/get-right/catalog" },
+  { label: "Contact / Support", href: "/get-right/contact", match: "/get-right/contact" },
 ];
 
 export function GetRightHeader() {
@@ -79,6 +80,7 @@ export function GetRightFooter() {
           <Link href="/get-right#services" className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4d5760] transition hover:text-[#a56f25]">Services</Link>
           <Link href="/get-right/policy" className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4d5760] transition hover:text-[#a56f25]">Policy</Link>
           <Link href="/get-right/catalog" className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4d5760] transition hover:text-[#a56f25]">Catalog</Link>
+          <Link href="/get-right/contact" className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4d5760] transition hover:text-[#a56f25]">Contact / Support</Link>
           <Link href="/" className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4d5760] transition hover:text-[#a56f25]">Home</Link>
         </nav>
       </div>
